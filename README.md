@@ -1,2 +1,2 @@
 # booking-scheduler
-A Java library for managing bookable time schedules, supporting both fixed time slots and flexible booking durations.
+A Java module that lets you create either a fixed schedule with equal time slots (for example a laundry room with 2-hour slots) or a flexible schedule with freely defined booking lengths (for example a barber, where one customer needs 3 hours and the next only 30 minutes).
