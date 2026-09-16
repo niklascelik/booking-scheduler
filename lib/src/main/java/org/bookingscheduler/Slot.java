@@ -31,7 +31,7 @@ public class Slot {
         return endTime;
     }
 
-    public String slotId(){
+    public String getSlotId(){
         return slotId;
 
     }
