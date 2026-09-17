@@ -121,7 +121,27 @@ public class TimeTable {
 
         }
     }
-    public boolean isSlotAvailable(){
 
+    /**
+     *  Checks if slot time is available.
+     * @param startTime
+     * @param endTime
+     * @return boolean
+     */
+    public boolean isSlotAvailable(LocalTime startTime, LocalTime endTime){
+
+        for(Slot existingSlot: slots){
+            LocalTime existingStartTime = existingSlot.getStartTime();
+            LocalTime existingEndTime = existingSlot.getEndTime();
+
+
+            if(startTime.isBefore(existingEndTime) && 
+                endTime.isAfter(existingStartTime)){
+                    return false;
+                }
+        }
+        return true;
+
+        
     }
 }
