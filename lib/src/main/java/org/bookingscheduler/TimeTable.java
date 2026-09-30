@@ -125,9 +125,10 @@ public class TimeTable {
     /**
      * Checks if slot time is available.
      * 
-     * @param startTime
-     * @param endTime
-     * @return boolean
+     * @param startTime start time of the slot.
+     * @param endTime end time of the slot.
+     * @return true if the time interval does not overlap with an existing slot,
+ *         otherwise false.
      */
     private boolean isSlotAvailable(LocalTime startTime, LocalTime endTime) {
 
@@ -144,6 +145,12 @@ public class TimeTable {
 
     }
 
+    /**
+     * Finds a slot by its ID.
+     *
+     * @param slotId the ID of the slot
+     * @return the matching slot or null if no slot is found
+     */
     public Slot getSlotById(String SlotId) {
         for (Slot slot : slots) {
             if (slot.getSlotId().equals(SlotId)) {
@@ -166,6 +173,14 @@ public class TimeTable {
         }
     }
 
+    /**
+     * Adds a manually defined slot to a flexible timetable.
+     *
+     * @param startTime the start time of the slot.
+     * @param endTime   the end time of the slot.
+     * @throws IllegalStateException    if the timetable is fixed.
+     * @throws IllegalArgumentException if the time is invalid or overlaps.
+     */
     public void addSlot(LocalTime startTime, LocalTime endTime) {
         if (fixed) {
             throw new IllegalStateException("You cant manually add slots to a fixed schedule.");
@@ -183,9 +198,13 @@ public class TimeTable {
 
         slots.add(slot);
 
-
     }
 
+    /**
+     * Returns all slots in the timetable.
+     *
+     * @return a copy of the list containing the timetables slots
+     */
     public List<Slot> getSlots() {
         return new ArrayList<>(slots);
     }
