@@ -20,9 +20,17 @@ public class Booking {
     public Booking(String customerName, String customerEmail) {
 
         this.bookingId = UUID.randomUUID().toString();
-        this.customerName = customerName;
+        if(isCustomerNameValid(customerName)){
+            this.customerName = customerName;
+        } else {
+            throw new IllegalArgumentException("Please enter a valid name");
+        }
+        
         if (isEmailValid(customerEmail)) {
             this.customerEmail = customerEmail;
+        } else {
+                        throw new IllegalArgumentException("Please enter a valid Email");
+
         }
 
     }
@@ -46,7 +54,7 @@ public class Booking {
      * @throws IllegalArgumentException if the name is empty.
      */
     public void setCustomerName(String customerName) {
-        if (customerName.length() > 0) {
+        if (isCustomerNameValid(customerName)) {
             this.customerName = customerName;
         } else {
             throw new IllegalArgumentException("Please enter a valid name.");
@@ -67,7 +75,7 @@ public class Booking {
         }
     }
 
-    public boolean isEmailValid(String email) {
+    private boolean isEmailValid(String email) {
         if (email != null
                 && email.length() > 0
                 && email.contains("@")
@@ -77,6 +85,13 @@ public class Booking {
 
         return false;
 
+    }
+
+    private boolean isCustomerNameValid(String customerName) {
+        if (customerName != null && customerName.trim().length() > 0) {
+            return true;
+        }
+        return false;
     }
 
 }
