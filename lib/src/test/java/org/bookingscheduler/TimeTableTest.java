@@ -2,7 +2,6 @@ package org.bookingscheduler;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -80,7 +79,6 @@ public class TimeTableTest {
 
         Slot slot = timeTable.getSlotById("2");
 
-        assertNotNull(slot);
         assertEquals("2", slot.getSlotId());
     }
 
@@ -211,6 +209,18 @@ public class TimeTableTest {
         Slot slot = timeTable.getSlotById("1");
 
         assertEquals("1", slot.getSlotId());
+    }
+
+    @Test
+    void shouldReturnOpeningTimeAndClosingTime() {
+        TimeTable timeTable = new TimeTable(
+                30,
+                true,
+                LocalTime.of(8, 0),
+                LocalTime.of(16, 34));
+
+        assertEquals(LocalTime.of(8, 0), timeTable.getOpeningTime());
+        assertEquals(LocalTime.of(16, 34), timeTable.getClosingTime());
     }
 
 }
