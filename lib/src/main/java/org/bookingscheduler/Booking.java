@@ -7,7 +7,7 @@ import java.util.UUID;
  */
 public class Booking {
 
-    private String bookingId;
+    private final String bookingId;
     private String customerName;
     private String customerEmail;
 

@@ -212,7 +212,7 @@ public class TimeTableTest {
     }
 
     @Test
-    void shouldReturnOpeningTimeAndClosingTime() {
+    void shouldReturnStartTimeAndEndTime() {
         TimeTable timeTable = new TimeTable(
                 30,
                 true,
