@@ -40,10 +40,10 @@ public class Booking {
     }
 
     /**
-     * Changes the customer's name.
+     * Changes the customers name.
      *
-     * @param customerName the new customer name
-     * @throws IllegalArgumentException if the name is empty
+     * @param customerName the new customer name.
+     * @throws IllegalArgumentException if the name is empty.
      */
     public void setCustomerName(String customerName) {
         if (customerName.length() > 0) {
@@ -56,8 +56,8 @@ public class Booking {
     /**
      * Changes the customer's email address.
      *
-     * @param customerEmail the new email address
-     * @throws IllegalArgumentException if the email is invalid
+     * @param customerEmail the new email address.
+     * @throws IllegalArgumentException if the email is invalid.
      */
     public void setCustomerEmail(String customerEmail) {
         if (isEmailValid(customerEmail)) {
@@ -68,7 +68,6 @@ public class Booking {
     }
 
     public boolean isEmailValid(String email) {
-
         if (email != null
                 && email.length() > 0
                 && email.contains("@")

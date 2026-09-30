@@ -22,7 +22,7 @@ public class TimeTableTest {
                 LocalTime.of(10, 0));
 
         assertEquals(30, timeTable.getSlotDuration());
-        assertTrue(timeTable.getFixed());
+        assertTrue(timeTable.isFixed());
         assertEquals(4, timeTable.getSlots().size());
     }
 
@@ -33,7 +33,7 @@ public class TimeTableTest {
                 false,
                 LocalTime.of(8, 0),
                 LocalTime.of(16, 0));
-        assertFalse(timeTable.getFixed());
+        assertFalse(timeTable.isFixed());
         assertNull(timeTable.getSlotDuration());
         assertEquals(0, timeTable.getSlots().size());
 
@@ -124,4 +124,93 @@ public class TimeTableTest {
                         LocalTime.of(16, 0)));
 
     }
+
+    @Test
+    void shouldRejectSlotOutsideSchedule() {
+        TimeTable timeTable = new TimeTable(
+                null,
+                false,
+                LocalTime.of(8, 0),
+                LocalTime.of(16, 0));
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> timeTable.addSlot(
+                        LocalTime.of(7, 0),
+                        LocalTime.of(13, 0)));
+    }
+
+    @Test
+    void shouldRejectOverlappingSlot() {
+        TimeTable timeTable = new TimeTable(
+                null,
+                false,
+                LocalTime.of(8, 0),
+                LocalTime.of(16, 0));
+
+        timeTable.addSlot(
+                LocalTime.of(8, 0),
+                LocalTime.of(13, 0));
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> timeTable.addSlot(
+                        LocalTime.of(9, 0),
+                        LocalTime.of(14, 0)));
+    }
+
+    @Test
+    void shouldRejectSlotWhenStartTimeisAfterEndTime() {
+        TimeTable timeTable = new TimeTable(
+                null,
+                false,
+                LocalTime.of(8, 0),
+                LocalTime.of(16, 0));
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> timeTable.addSlot(
+                        LocalTime.of(12, 0),
+                        LocalTime.of(10, 0)));
+    }
+
+    @Test
+    void shouldRejectFixedTimetableWithoutSlotDuration() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> new TimeTable(
+                        null,
+                        true,
+                        LocalTime.of(8, 0),
+                        LocalTime.of(16, 0)));
+    }
+
+    @Test
+    void shouldRejectInvalidSlotDuration() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> new TimeTable(
+                        0,
+                        true,
+                        LocalTime.of(8, 0),
+                        LocalTime.of(16, 0)));
+    }
+
+    @Test
+    void shouldGiveAddedSlotAnId() {
+        TimeTable timeTable = new TimeTable(
+                null,
+                false,
+                LocalTime.of(8, 0),
+                LocalTime.of(16, 0));
+
+        timeTable.addSlot(
+                LocalTime.of(9, 0),
+                LocalTime.of(10, 0));
+
+        Slot slot = timeTable.getSlotById("1");
+
+        assertEquals("1", slot.getSlotId());
+    }
+
 }

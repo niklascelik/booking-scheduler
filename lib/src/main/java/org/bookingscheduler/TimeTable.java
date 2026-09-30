@@ -37,14 +37,6 @@ public class TimeTable {
 
     }
 
-    public void setOpeningTime(LocalTime openingTime) {
-        this.openingTime = openingTime;
-    }
-
-    public void setClosingTime(LocalTime closingTime) {
-        this.closingTime = closingTime;
-    }
-
     public LocalTime getOpeningTime() {
         return openingTime;
     }
@@ -53,21 +45,11 @@ public class TimeTable {
         return closingTime;
     }
 
-    public void setSlotDuration(Integer slotDuration) {
-        validateSlotDuration(slotDuration, fixed);
-        this.slotDuration = slotDuration;
-    }
-
-    public void setFixed(boolean fixed) {
-        validateSlotDuration(slotDuration, fixed);
-        this.fixed = fixed;
-    }
-
     public Integer getSlotDuration() {
         return slotDuration;
     }
 
-    public boolean getFixed() {
+    public boolean isFixed() {
         return fixed;
     }
 
@@ -75,8 +57,9 @@ public class TimeTable {
      * Validates the slot duration according to the timetable type.
      *
      * @param slotDuration the duration of each slot.
-     * @param fixed whether the timetable uses a fixed schedule.
-     * @throws IllegalArgumentException if the slot duration is invalid for the sleceted schedule type.
+     * @param fixed        whether the timetable uses a fixed schedule.
+     * @throws IllegalArgumentException if the slot duration is invalid for the
+     *                                  sleceted schedule type.
      */
     private void validateSlotDuration(Integer slotDuration, boolean fixed) {
         if (slotDuration == null && fixed) {
