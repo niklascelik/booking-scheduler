@@ -72,12 +72,11 @@ public class TimeTable {
     }
 
     /**
-     * Throws an expection if a slot duration is provided for a flexible schedule.
-     * Throws an expection if a slot duration is null or less than 0 for a fixed
-     * schedule.
-     * 
-     * @param slotDuration
-     * @param fixed
+     * Validates the slot duration according to the timetable type.
+     *
+     * @param slotDuration the duration of each slot.
+     * @param fixed whether the timetable uses a fixed schedule.
+     * @throws IllegalArgumentException if the slot duration is invalid for the sleceted schedule type.
      */
     private void validateSlotDuration(Integer slotDuration, boolean fixed) {
         if (slotDuration == null && fixed) {
@@ -126,9 +125,9 @@ public class TimeTable {
      * Checks if slot time is available.
      * 
      * @param startTime start time of the slot.
-     * @param endTime end time of the slot.
+     * @param endTime   end time of the slot.
      * @return true if the time interval does not overlap with an existing slot,
- *         otherwise false.
+     *         otherwise false.
      */
     private boolean isSlotAvailable(LocalTime startTime, LocalTime endTime) {
 
@@ -151,9 +150,9 @@ public class TimeTable {
      * @param slotId the ID of the slot
      * @return the matching slot or null if no slot is found
      */
-    public Slot getSlotById(String SlotId) {
+    public Slot getSlotById(String slotId) {
         for (Slot slot : slots) {
-            if (slot.getSlotId().equals(SlotId)) {
+            if (slot.getSlotId().equals(slotId)) {
                 return slot;
             }
         }
