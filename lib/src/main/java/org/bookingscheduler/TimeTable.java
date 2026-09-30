@@ -31,7 +31,7 @@ public class TimeTable {
         this.openingTime = openingTime;
         this.closingTime = closingTime;
 
-        if(fixed){
+        if (fixed) {
             generateSlots();
         }
 
@@ -79,7 +79,7 @@ public class TimeTable {
      * @param slotDuration
      * @param fixed
      */
-    public void validateSlotDuration(Integer slotDuration, boolean fixed) {
+    private void validateSlotDuration(Integer slotDuration, boolean fixed) {
         if (slotDuration == null && fixed) {
             throw new IllegalArgumentException(
                     "You have to decalare a valid slotDuration if you want to use a fixed schedule.");
@@ -95,53 +95,99 @@ public class TimeTable {
         }
 
     }
-/**
- * Generates time slots for the timetable.
- * Calculates the total time between opening and closing time
- * and determines how many slots fits within that duration.
- */
-    public void generateSlots() {
-            LocalTime currentTime = openingTime;
 
-            Duration duration = Duration.between(openingTime, closingTime);
-            long totalMinutes = duration.toMinutes();
-            long slotsPerDay = totalMinutes / slotDuration;
+    /**
+     * Generates time slots for the timetable.
+     * Calculates the total time between opening and closing time
+     * and determines how many slots fits within that duration.
+     */
+    private void generateSlots() {
+        LocalTime currentTime = openingTime;
 
-            int i = 0;
-            
-            while (i < slotsPerDay) {
-                LocalTime endTime = currentTime.plusMinutes(slotDuration);
+        Duration duration = Duration.between(openingTime, closingTime);
+        long totalMinutes = duration.toMinutes();
+        long slotsPerDay = totalMinutes / slotDuration;
 
-                Slot slot = new Slot(currentTime, endTime, String.valueOf(i + 1));
-                slots.add(slot);
+        int i = 0;
 
-                currentTime = currentTime.plusMinutes(slotDuration);
-                i++;
-                System.out.println(slot.getStartTime() + " - " + slot.getEndTime() +" - " + slot.getSlotId());
+        while (i < slotsPerDay) {
+            LocalTime endTime = currentTime.plusMinutes(slotDuration);
+
+            Slot slot = new Slot(currentTime, endTime, String.valueOf(i + 1));
+            slots.add(slot);
+
+            currentTime = currentTime.plusMinutes(slotDuration);
+            i++;
 
         }
     }
 
     /**
-     *  Checks if slot time is available.
+     * Checks if slot time is available.
+     * 
      * @param startTime
      * @param endTime
      * @return boolean
      */
-    public boolean isSlotAvailable(LocalTime startTime, LocalTime endTime){
+    private boolean isSlotAvailable(LocalTime startTime, LocalTime endTime) {
 
-        for(Slot existingSlot: slots){
+        for (Slot existingSlot : slots) {
             LocalTime existingStartTime = existingSlot.getStartTime();
             LocalTime existingEndTime = existingSlot.getEndTime();
 
-
-            if(startTime.isBefore(existingEndTime) && 
-                endTime.isAfter(existingStartTime)){
-                    return false;
-                }
+            if (startTime.isBefore(existingEndTime) &&
+                    endTime.isAfter(existingStartTime)) {
+                return false;
+            }
         }
         return true;
 
-        
     }
+
+    public Slot getSlotById(String SlotId) {
+        for (Slot slot : slots) {
+            if (slot.getSlotId().equals(SlotId)) {
+                return slot;
+            }
+        }
+        return null;
+    }
+
+    private void validateSlotTime(LocalTime startTime, LocalTime endTime) {
+        if (!startTime.isBefore(endTime)) {
+            throw new IllegalArgumentException("start time must be before end time.");
+        }
+    }
+
+    private void validateSlotWithinSchedule(LocalTime startTime, LocalTime endTime) {
+        if (startTime.isBefore(openingTime) ||
+                endTime.isAfter(closingTime)) {
+            throw new IllegalArgumentException("slot time must be within the schedules opening and closing hours.");
+        }
+    }
+
+    public void addSlot(LocalTime startTime, LocalTime endTime) {
+        if (fixed) {
+            throw new IllegalStateException("You cant manually add slots to a fixed schedule.");
+        }
+
+        validateSlotTime(startTime, endTime);
+        validateSlotWithinSchedule(startTime, endTime);
+
+        if (!isSlotAvailable(startTime, endTime)) {
+            throw new IllegalArgumentException("Slot is not available.");
+        }
+        String slotId = String.valueOf(slots.size() + 1);
+
+        Slot slot = new Slot(startTime, endTime, slotId);
+
+        slots.add(slot);
+
+
+    }
+
+    public List<Slot> getSlots() {
+        return new ArrayList<>(slots);
+    }
+
 }

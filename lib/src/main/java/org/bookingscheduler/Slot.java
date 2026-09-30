@@ -6,6 +6,7 @@ public class Slot {
     private LocalTime startTime;
     private LocalTime endTime;
     private final String slotId;
+    private Booking booking;
 
     public Slot(LocalTime startTime, LocalTime endTime, String slotId) {
         this.startTime = startTime;
@@ -31,8 +32,22 @@ public class Slot {
         return endTime;
     }
 
-    public String getSlotId(){
+    public String getSlotId() {
         return slotId;
 
     }
+
+    public Booking getBooking() {
+        return booking;
+    }
+
+    public void book(Booking booking) {
+        if (this.booking == null) {
+            this.booking = booking;
+        } else {
+            throw new IllegalStateException("Slot is already booked.");
+        }
+    }
+
+
 }
